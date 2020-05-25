@@ -1,8 +1,4 @@
-import React, {
-  Suspense,
-  useState,
-  useTransition
-} from "react";
+import React, { Suspense, useState, useTransition } from "react";
 import ReactDOM from "react-dom";
 
 import "./styles.css";
@@ -11,10 +7,7 @@ import { fetchProfileData } from "./fakeApi";
 const initialResource = fetchProfileData();
 
 function Button({ children, onClick }) {
-  const [
-    startTransition,
-    isPending
-  ] = useTransition({
+  const [startTransition, isPending] = useTransition({
     timeoutMs: 10000
   });
 
@@ -28,21 +21,16 @@ function Button({ children, onClick }) {
     <span
       className="fa fa-circle-o-notch fa-spin"
       style={{
-        marginLeft: 4,
+        marginLeft: 5,
         fontSize: "small",
-        visibility: isPending
-          ? "visible"
-          : "hidden"
+        visibility: isPending ? "visible" : "hidden"
       }}
     />
   );
 
   return (
     <>
-      <button
-        onClick={handleClick}
-        disabled={isPending}
-      >
+      <button onClick={handleClick} disabled={isPending}>
         {children}
       </button>
       {isPending ? spinner : null}
@@ -51,25 +39,17 @@ function Button({ children, onClick }) {
 }
 
 function ProfilePage() {
-  const [resource, setResource] = useState(
-    initialResource
-  );
+  const [resource, setResource] = useState(initialResource);
 
   function handleRefreshClick() {
     setResource(fetchProfileData());
   }
 
   return (
-    <Suspense
-      fallback={<h1>Loading profile...</h1>}
-    >
+    <Suspense fallback={<h1>Loading profile...</h1>}>
       <ProfileDetails resource={resource} />
-      <Button onClick={handleRefreshClick}>
-        Refresh
-      </Button>
-      <Suspense
-        fallback={<h1>Loading posts...</h1>}
-      >
+      <Button onClick={handleRefreshClick}>Refresh</Button>
+      <Suspense fallback={<h1>Loading posts...</h1>}>
         <ProfileTimeline resource={resource} />
       </Suspense>
     </Suspense>
@@ -92,9 +72,5 @@ function ProfileTimeline({ resource }) {
   );
 }
 
-const rootElement = document.getElementById(
-  "root"
-);
-ReactDOM.createRoot(rootElement).render(
-  <ProfilePage />
-);
+const rootElement = document.getElementById("root");
+ReactDOM.createRoot(rootElement).render(<ProfilePage />);
